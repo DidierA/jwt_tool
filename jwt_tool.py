@@ -45,7 +45,7 @@ def checkSigKid(sig, contents):
 
 def crackSig(sig, contents):
     quiet = True
-    if headDict["alg"][0:2] != "HS":
+    if headDict["alg"][0:2] != "HS" and headDict["alg"] != "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512":
         print("Algorithm is not HMAC-SHA - cannot test against passwords, try the Verify function.")
         return
     print("\nLoading key dictionary...")
@@ -147,7 +147,7 @@ def testKey(key, sig, contents, headDict, quiet):
         testSig = base64.urlsafe_b64encode(hmac.new(key,contents,hashlib.sha256).digest()).decode('UTF-8').strip("=")
     elif headDict["alg"] == "HS384":
         testSig = base64.urlsafe_b64encode(hmac.new(key,contents,hashlib.sha384).digest()).decode('UTF-8').strip("=")
-    elif headDict["alg"] == "HS512":
+    elif headDict["alg"] == "HS512" or headDict["alg"] == "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512":
         testSig = base64.urlsafe_b64encode(hmac.new(key,contents,hashlib.sha512).digest()).decode('UTF-8').strip("=")
     else:
         print("Algorithm is not HMAC-SHA - cannot test with this tool.")
